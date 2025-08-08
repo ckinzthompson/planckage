@@ -4,7 +4,7 @@ import tomllib
 from pathlib import Path
 
 from . import __version__
-from . import __log__, __planckage__, __undo__, __results__, __figures__, __data__, __datalist__
+from . import __log__, __planckage__, __results__, __figures__, __data__
 from . import utils
 
 def init(project_name: str = "./"):
@@ -19,12 +19,9 @@ def init(project_name: str = "./"):
 	project_path.mkdir()
 	(project_path / __planckage__).mkdir()
 	(project_path / __data__).mkdir()
-	(project_path / __undo__).mkdir()
 	(project_path / __results__).mkdir()
 	(project_path / __figures__).mkdir()
 
-	with (project_path / __datalist__).open("w") as f:
-		f.write(f"## Enter the path(s) to your data file(s) below\n")
 	(project_path / __log__).touch()
 	with (project_path / __log__).open("w") as f:
 		f.write(f"Created new planckage project at: {time.ctime()}\n")# Location: {project_path.resolve()}\n") ## Location is a bit invasive
@@ -68,7 +65,7 @@ def unlock(project_path: Path = './'):
 		(project_path / __planckage__ / 'lock.toml').unlink()
 
 def lock(project_path: Path = './'):
-	hash_data, hash_log, hash_all = utils.hash_planckage(project_path)
+	hash_log, hash_all = utils.hash_planckage(project_path)
 	with open(project_path / __log__, 'r') as f:
 		create_time = f.readline()
 		ind = create_time.index(":")
@@ -82,15 +79,15 @@ def lock(project_path: Path = './'):
 		f.write(f'lock_time = \"{lock_time}\"\n')
 
 		f.write(f'[hashes]\n')
-		f.write(f'data = \"{hash_data}\"\n')
 		f.write(f'log = \"{hash_log}\"\n')
 		f.write(f'allfiles = \"{hash_all}\"\n\n')
+
 	print('== Locked ==')
 	print(f'Locked at:     {lock_time}')
 	print(f'Lock hash:     {hash_all}')
 
 def check(project_path: Path = './'):
-	hash_data, hash_log, hash_all = utils.hash_planckage(project_path)
+	hash_log, hash_all = utils.hash_planckage(project_path)
 
 	lock_path = project_path / __planckage__ / "lock.toml"
 	if not lock_path.exists():
@@ -100,12 +97,12 @@ def check(project_path: Path = './'):
 	lock = tomllib.load(lock_path.open('rb'))
 	
 	try:
-		assert lock['hashes']['data'] == hash_data
 		assert lock['hashes']['log'] == hash_log
 		assert lock['hashes']['allfiles'] == hash_all
 		print('== Lock has not been tampered with ==')
 	except:
 		print('== Lock has been tampered with ==')
+
 	print(f'Created:      {lock['create_time']}')
 	print(f'Locked:       {lock['lock_time']}')
 	print(f'Lock hash:    {lock['hashes']['allfiles']}')

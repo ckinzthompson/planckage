@@ -1,13 +1,12 @@
 # planckage
 `planckage` is a git-inspired program for tracking scientific analyses. It is meant to be flexible. In general, any analysis should be contained within a folder containing data, the analysis scripts, and any results/figures. Planckage formalizes that by making it into a repository of sorts.
 
-Each planckage repo is a folder that has at least four items:
-* `data.txt`: a list of file locations for the raw data used in this analysis
-* `./data`: a directory that may or may not contain the data files referenced in `data.txt`
+Each planckage repo is a folder that has at least three items:
+* `./data`: a directory where your data files should be stored
 * `./results`: a directory where your scripts should save any output information/files
 * `./figures`: a directory where your scripts should save any output figures/plots
 
-This approach standardizes an analysis, but also makes it easier to apply your scripts to new bits of data. In general, just have the script parse the files in `data.txt`. The reason to keep all of your output in the folders is because you can create recipes of everything else. Feel free to make other folders, they're be included in the recipe.
+This approach standardizes an analysis, but also makes it easier to apply your scripts to new bits of data. The reason to keep all of your output in the folders is because you can create recipes of everything else. Feel free to make other folders, they're be included in the recipe.
 
 Recipes are a little like templates that you make. You might have a general approach to analyzing data from one technique. In that case, you would apply those functions to different datasets for a new analysis. "Cooking" a recipe just copies those scripts into a new planckage repo.
 
@@ -16,29 +15,6 @@ Set up the planckage repo
 ``` sh
 planckage init fancyanalysis7
 cd fancyanalysis7
-```
-
-Add data to the planckage repo. These will go into `data.txt`
-``` sh
-planckage data add /path/to/data/datafile1.csv
-planckage data add /path/to/data/datafile2.csv
-```
-
-make sure the data was entered properly -- nonexisiting files will be commented out
-``` sh
-planckage data check
-```
-
-copy the data in the the `./data` folder. N.B. this also changes the path in `data.txt`
-``` sh
-planckage data copy
-planckage data list
-```
-
-Finally, if you made a mistake (like clearing the `data.txt` file!), you can undo!!!
-```sh
-planckage data clear
-planckage data undo
 ```
 
 Now you are ready to do a bunch of analysis. Keep the analysis scripts in the planckage repo, and save any outputs in to the `./figures/` or `./results` folders. 

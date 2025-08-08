@@ -1,17 +1,8 @@
-# # import requests
-# # import zipfile
-# # import io
-# # import os
-
-# import time
-# import tomllib
-
 import shutil
 import zipfile
 from pathlib import Path
-from platformdirs import user_data_dir
 
-from . import __data__,__datalist__,__results__,__figures__,__planckage__,__undo__
+from . import __data__,__results__,__figures__,__planckage__
 from . import utils, registry
 
 def cook(recipe_name: str, path: str = './'):
@@ -71,7 +62,9 @@ def create(recipe_name: str, path: str = './'):
 		return
 	keep = []
 	for obj in toplevel.iterdir():
-		if not obj.resolve() in [toplevel/__data__.resolve(),toplevel/__datalist__.resolve(),toplevel/__results__.resolve(),toplevel/__figures__.resolve(),toplevel/__planckage__.resolve()]:
+		if not obj.resolve() in [toplevel/__data__.resolve(), toplevel/__results__.resolve(), toplevel/__figures__.resolve(), toplevel/__planckage__.resolve()]:
+			if obj.name in [Path('.DS_Store'),]:
+				continue
 			keep.append(obj.resolve())
 
 	# ## and show them...
@@ -106,66 +99,3 @@ def remove(recipe_name: str):
 	registry.backup()
 	registry.remove(rn)
 	print(f'Removed recipe "{rn}" from registry')
-
-
-
-# def list_remote():
-# 	try:
-# 		registry = toml.load(FILE)
-# 		for entry in registry.get("recipes", []):
-# 			print(f"- {entry['name']}: {entry['description']}")
-# 	except Exception as e:
-# 		print(f"❌ Failed to fetch registry: {e}")
-
-# def download(name_or_url: str, toplevel: Path):
-# 	recipes_dir = toplevel / "recipes"
-# 	recipes_dir.mkdir(exist_ok=True)
-
-# 	# Determine if name_or_url is a URL or a registry name
-# 	if name_or_url.startswith("http"):
-# 		url = name_or_url
-# 	else:
-# 		try:
-# 			registry = toml.load(FILE)
-# 			match = next((r for r in registry.get("recipes", []) if r["name"] == name_or_url), None)
-# 			if not match:
-# 				print(f"❌ Recipe '{name_or_url}' not found in registry.")
-# 				return
-# 			url = match["url"]
-# 		except Exception as e:
-# 			print(f"❌ Failed to fetch registry: {e}")
-# 			return
-
-# 	print(f"📦 Downloading from: {url}")
-# 	try:
-# 		r = requests.get(url)
-# 		r.raise_for_status()
-# 		z = zipfile.ZipFile(io.BytesIO(r.content))
-# 		temp_dir = recipes_dir / "__temp_recipe__"
-# 		if temp_dir.exists():
-# 			shutil.rmtree(temp_dir)
-# 		z.extractall(temp_dir)
-
-# 		# Validate and move
-# 		toml_files = list(temp_dir.rglob("recipe.toml"))
-# 		if not toml_files:
-# 			print("❌ No recipe.toml found in downloaded recipe.")
-# 			shutil.rmtree(temp_dir)
-# 			return
-
-# 		recipe_folder = toml_files[0].parent
-# 		metadata = toml.load(toml_files[0])
-# 		final_name = metadata.get("name", recipe_folder.name).replace(" ", "_")
-# 		final_path = recipes_dir / final_name
-
-# 		if final_path.exists():
-# 			print(f"⚠️ Overwriting existing recipe at {final_path}")
-# 			shutil.rmtree(final_path)
-
-# 		shutil.move(str(recipe_folder), str(final_path))
-# 		shutil.rmtree(temp_dir)
-
-# 		print(f"✅ Installed recipe: {metadata['name']} -> ./recipes/{final_path.name}")
-
-# 	except Exception as e:
-# 		print(f"❌ Failed to download or install recipe: {e}")

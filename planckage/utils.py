@@ -1,7 +1,7 @@
 import hashlib
 from pathlib import Path
 
-from . import __log__, __planckage__, __undo__, __results__, __figures__, __data__, __datalist__
+from . import __log__, __planckage__, __results__, __figures__, __data__
 
 def hashfile(fn: Path):
 	bf = open(fn,'rb').read()
@@ -9,7 +9,6 @@ def hashfile(fn: Path):
 	return hash
 
 def hash_planckage(project_path: Path):
-	hash_data = hashfile(project_path / __datalist__)
 	hash_log =  hashfile(project_path / __log__)
 	hash_all = hashlib.sha256()
 	for fn in project_path.rglob('*'):
@@ -20,7 +19,7 @@ def hash_planckage(project_path: Path):
 		hash = hashfile(fn)
 		hash_all.update(bytes.fromhex(hash))
 	hash_all = hash_all.hexdigest()
-	return hash_data, hash_log, hash_all
+	return hash_log, hash_all
 
 def log(project_path: Path, message: str):
 	suffix = '\n' if not message.endswith('\n') else ''

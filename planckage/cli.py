@@ -7,7 +7,6 @@ toplevel = utils.get_toplevel('./')
 
 ## Setup
 app = typer.Typer(help="Planckage: a tool for managing scientific data analysis")#,no_args_is_help=True)
-app_data = typer.Typer(help="-> Data-related routines")
 app_recipe = typer.Typer(help="-> Recipe-related routines")
 
 ## Core
@@ -33,46 +32,6 @@ def unlock():
 @app.command(help="Check lock file")
 def check():
 	core.check(toplevel)
-
-## Data
-@app_data.command(help="Add new file(s)/folders(s) to ./data.txt")
-def add(pattern: List[str]):
-	typer.echo(f"Adding File(s)/Folder(s): {pattern}")
-	data.add(pattern,toplevel)
-
-@app_data.command(help="Copy ./data.txt entries to ./data")
-def copy():
-	typer.echo(f"Copying Data to Local Folder")
-	data.localcopy(toplevel)
-
-@app_data.command(help='Comment out non-existing ./data.txt entries')
-def check():
-	typer.echo(f"Checking datalist")
-	data.check(toplevel)
-
-@app_data.command(help='Replace ./data.txt with the previous version')
-def undo():
-	typer.echo(f"Undo datalist edit")
-	data.undo(toplevel)
-
-@app_data.command(help='Remove files from ./data that are missing or are non-active entries in ./data.txt')
-def clean():
-	typer.echo(f"Cleaning local data")
-	data.clean(toplevel)
-
-@app_data.command(help='Convert ./data.txt to absolute paths')
-def convert2abs():
-	typer.echo(f"Converting ./data.txt to absolute paths")
-	data.convert2abs(toplevel)
-
-@app_data.command(help='Convert ./data.txt to relative paths')
-def convert2rel():
-	typer.echo(f"Converting ./data.txt to relative paths")
-	data.convert2rel(toplevel)
-
-@app_data.command(help='List data files')
-def list():
-	data.list(toplevel)
 
 ## Recipes
 @app_recipe.command(help="Remove everything related to recipes")
@@ -114,9 +73,7 @@ def remove(recipe_name: str):
 def undo():
 	registry.undo()
 
-
 ## Sub-apps
-app.add_typer(app_data, name="data")
 app.add_typer(app_recipe, name="recipe")
 
 if __name__ == "__main__":
