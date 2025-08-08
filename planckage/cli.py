@@ -1,5 +1,5 @@
 import typer
-from . import core, data, utils, recipe, registry
+from . import core, utils, recipe, registry
 from typing import List
 from pathlib import Path
 
@@ -24,10 +24,10 @@ def clone(source: str = typer.Argument('./', help="Original planckage repo locat
 def lock():
 	core.lock(toplevel)
 
-@app.command(help="Remove lock file")
-def unlock():
-	core.unlock(toplevel)
-	typer.echo(f"Unlocked")
+# @app.command(help="Remove lock file")
+# def unlock():
+# 	core.unlock(toplevel)
+# 	typer.echo(f"Unlocked")
 
 @app.command(help="Check lock file")
 def check():

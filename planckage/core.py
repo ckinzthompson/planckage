@@ -60,9 +60,9 @@ def clone(source: str, destination: str = "./"):
 	# with (path_dst / __log__).open('a') as f:
 	# 	f.write(f'\nCloned from {path_src}')
 
-def unlock(project_path: Path = './'):
-	if (project_path / __planckage__ / 'lock.toml').exists():
-		(project_path / __planckage__ / 'lock.toml').unlink()
+# def unlock(project_path: Path = './'):
+# 	if (project_path / __planckage__ / 'lock.toml').exists():
+# 		(project_path / __planckage__ / 'lock.toml').unlink()
 
 def lock(project_path: Path = './'):
 	hash_log, hash_all = utils.hash_planckage(project_path)
