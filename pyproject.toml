@@ -2,15 +2,25 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "planckage"
 version = "0.1.0"
 description = "A tool for managing scientific data analysis"
-authors = [{ name = "Colin Kinz-Thompson", email = "colin.kinzthompson@gmail.com" }]
+authors = [
+  { name = "Colin Kinz-Thompson", email = "colin.kinzthompson@gmail.com" },
+]
 readme = "README.md"
-license = { text = "MIT" }
-requires-python = ">=3.8"
-
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
 dependencies = [
   "typer",
   "platformdirs"
@@ -18,3 +28,7 @@ dependencies = [
 
 [project.scripts]
 planckage = "planckage.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/ckinzthompson/planckage"
+Issues = "https://github.com/ckinzthompson/planckage/issues"

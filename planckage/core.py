@@ -15,8 +15,11 @@ def init(project_name: str = "./"):
 	project_path = Path(project_name)
 	if (project_path / __planckage__).exists():
 		raise FileExistsError(f"'{project_name}' is already a planckage project!")
+	if not project_path.is_dir():
+		raise Exception(f"'{project_name}' is not a directory!")
 	
-	project_path.mkdir()
+	if not project_path.exists():
+		project_path.mkdir()
 	(project_path / __planckage__).mkdir()
 	(project_path / __data__).mkdir()
 	(project_path / __results__).mkdir()
